@@ -2,7 +2,7 @@
 
 Mocha reporter using the Google Cloud Logging API with additional stats.
 
-Originally a fork of (mocha-stackdriver-reporter)[https://github.com/jouni-kantola/mocha-stackdriver-reporter] and full credit to the original author, whose work I have and will continue to build on.
+Originally a fork of [mocha-stackdriver-reporter](https://github.com/jouni-kantola/mocha-stackdriver-reporter) and full credit to the original author, whose work I have and will continue to build on.
 
 ## Install
 
