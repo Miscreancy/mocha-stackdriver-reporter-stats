@@ -47,7 +47,7 @@ function StackdriverReporter(runner, options = {}) {
       result.totalTestsRegistered++
     })
     .once(EVENT_RUN_END, () => {
-      obj.stats = this.stats
+      obj.stats = configureStats(this.stats)
       if (reporterOptions.alsoConsole || reporterOptions.onlyConsole)
         console.log("result", JSON.stringify(obj));
 
@@ -84,6 +84,19 @@ Example: --reporter-options projectId=myGcpProjectId,logName=myLog
     projectId,
     logName,
   };
+}
+
+function configureStats(statsObject, reporterOptions) {
+  if (!reporterOptions.stats) {
+    return statsObject
+  }
+  else {
+    const newStatsObject = {}
+    reporterOptions.stats.forEach(function (item) {
+      newStatsObject.item = statsObject.item
+    })
+    return newStatsObject
+  }
 }
 
 function getEntryMetadata(reporterOptions) {
