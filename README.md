@@ -1,12 +1,12 @@
-# Mocha Stackdriver Reporter
+# Mocha Stackdriver Reporter w/ Stats
 
-Mocha reporter using the Google Cloud Logging API.
+Mocha reporter using the Google Cloud Logging API with additional stats.
 
-![npm cit](https://github.com/jouni-kantola/mocha-stackdriver-reporter/workflows/npm%20cit/badge.svg)
+Originally a fork of (mocha-stackdriver-reporter)[https://github.com/jouni-kantola/mocha-stackdriver-reporter] and full credit to the original author, whose work I have and will continue to build on.
 
 ## Install
 
-`npm install mocha-stackdriver-reporter --save-dev`
+`npm install mocha-stackdriver-reporter-stats --save-dev`
 
 ## Options
 
@@ -19,14 +19,14 @@ Mocha reporter using the Google Cloud Logging API.
 Run mocha with reporter configured:
 
 ```bash
-mocha --reporter mocha-stackdriver-reporter --reporter-options projectId=myGcpProjectId,logName=myLogName
+mocha --reporter mocha-stackdriver-reporter-stats --reporter-options projectId=myGcpProjectId,logName=myLogName
 ```
 
 Entry metadata can be set with environment variable `ENTRY_METADATA`:
 
 ```bash
 ENTRY_METADATA='{ "resource": { "labels": { "function_name": "my-cloud-function", "project_id": "my-project-id", "region": "my-region" }, "type": "cloud_function" } }' \
-mocha --reporter mocha-stackdriver-reporter --reporter-options projectId=my-project-id,logName=my-log-name
+mocha --reporter mocha-stackdriver-reporter-stats --reporter-options projectId=my-project-id,logName=my-log-name
 ```
 
 ## Code

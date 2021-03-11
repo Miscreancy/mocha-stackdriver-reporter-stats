@@ -1,14 +1,14 @@
 {
-  "name": "mocha-stackdriver-reporter",
-  "version": "0.1.0",
-  "description": "Mocha reporter to log test results with Google Cloud Logging API",
+  "name": "mocha-stackdriver-reporter-stats",
+  "version": "0.0.1",
+  "description": "Mocha reporter to log test results and stats with Google Cloud Logging API",
   "main": "index.js",
-  "author": "Jouni Kantola <jouni@kantola.se>",
+  "author": "Torran Turner <tor.turner@a1comms.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jouni-kantola/mocha-stackdriver-reporter/issues"
+    "url": "https://github.com/miscreancy/mocha-stackdriver-reporter-stats/issues"
   },
-  "homepage": "https://github.com/jouni-kantola/mocha-stackdriver-reporter",
+  "homepage": "https://github.com/miscreancy/mocha-stackdriver-reporter-stats",
   "keywords": [
     "mocha",
     "stackdriver",

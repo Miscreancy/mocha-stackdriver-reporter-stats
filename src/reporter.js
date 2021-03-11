@@ -7,6 +7,8 @@ const {
   EVENT_RUN_END,
   EVENT_TEST_FAIL,
   EVENT_TEST_PASS,
+  EVENT_RUN_BEGIN,
+  EVENT_TEST_END
 } = Mocha.Runner.constants;
 
 function StackdriverReporter(runner, options = {}) {
@@ -21,9 +23,13 @@ function StackdriverReporter(runner, options = {}) {
   const result = {
     passes: [],
     failures: [],
+    tests: 0
   };
 
   runner
+    .once(EVENT_RUN_BEGIN, () => {
+      result.start = new Date()
+    })
     .on(EVENT_TEST_PASS, (test) => {
       result.passes.push(test.fullTitle());
     })
@@ -33,7 +39,12 @@ function StackdriverReporter(runner, options = {}) {
         message: err.message,
       });
     })
+    .on(EVENT_TEST_END, () => {
+      result.tests++
+    })
     .once(EVENT_RUN_END, () => {
+      result.end = new Date()
+      result.duration = result.end - result.start
       if (reporterOptions.alsoConsole || reporterOptions.onlyConsole)
         console.log("result", JSON.stringify(result));
 
