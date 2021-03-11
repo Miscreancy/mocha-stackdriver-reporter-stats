@@ -51,7 +51,7 @@ mocha.reporter(StackdriverReporter, {
       type: "cloud_function",
     },
   },
-  stats: ["suites", "tests", "passes", "pending", "failures", "start", "end", "duration"]
+  stats: ["suites", "tests", "passes", "pending", "failures", "start", "end", "duration"],
   alsoConsole: false, // (optional) if true, also output result to console
   onlyConsole: false, // (optional) if true, only output result to console
 });
