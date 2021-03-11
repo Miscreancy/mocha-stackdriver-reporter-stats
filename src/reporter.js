@@ -4,10 +4,12 @@ const Mocha = require("mocha");
 const CloudLogger = require("./google-cloud-logger");
 
 const {
-  EVENT_RUN_END,
   EVENT_TEST_FAIL,
   EVENT_TEST_PASS,
+  EVENT_TEST_PENDING,
   EVENT_RUN_BEGIN,
+  EVENT_SUITE_BEGIN,
+  EVENT_SUITE_END,
   EVENT_TEST_END
 } = Mocha.Runner.constants;
 
@@ -20,33 +22,34 @@ function StackdriverReporter(runner, options = {}) {
   const entryMetadata = getEntryMetadata(reporterOptions);
   const log = new CloudLogger(projectId, logName, entryMetadata);
 
-  const result = {
+  const obj = {
     passes: [],
     failures: [],
-    tests: 0
+    totalTestsRegistered: 0
   };
 
+  if (!runner.stats) {
+    const createStatsCollector = require('/mocha/lib/stats-collector')
+    createStatsCollector(runner)
+  }
+
   runner
-    .once(EVENT_RUN_BEGIN, () => {
-      result.start = new Date()
-    })
     .on(EVENT_TEST_PASS, (test) => {
-      result.passes.push(test.fullTitle());
+      obj.passes.push(test.fullTitle());
     })
     .on(EVENT_TEST_FAIL, (test, err) => {
-      result.failures.push({
+      obj.failures.push({
         test: test.fullTitle(),
         message: err.message,
       });
     })
     .on(EVENT_TEST_END, () => {
-      result.tests++
+      result.totalTestsRegistered++
     })
     .once(EVENT_RUN_END, () => {
-      result.end = new Date()
-      result.duration = result.end - result.start
+      obj.stats = this.stats
       if (reporterOptions.alsoConsole || reporterOptions.onlyConsole)
-        console.log("result", JSON.stringify(result));
+        console.log("result", JSON.stringify(obj));
 
       if (!reporterOptions.onlyConsole) {
         if (result.failures.length > 0) log.error(result);
