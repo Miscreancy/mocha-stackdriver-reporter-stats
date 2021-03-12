@@ -4,6 +4,7 @@ const Mocha = require("mocha");
 const CloudLogger = require("./google-cloud-logger");
 const fs = require("fs");
 const nanoid =  require("nanoid")
+const shortId = nanoid.customAlphabet("012345678", 8)
 
 const {
   EVENT_TEST_FAIL,
@@ -66,10 +67,14 @@ function StackdriverReporter(runner, options = {}) {
         if (entryMetadata) { fileObj.metadata = entryMetadata }
         fileObj.projectId = projectId
         fileObj.logName = logName
-        let suiteName = fileObj.data.suite.toString().replace(/\s/g, '')
+        if (obj.suite) {
+          var suiteName = fileObj.data.suite.toString().replace(/\s/g, '')
+        } else {
+          var suiteName = shortId()
+        }
         const filePath = `${reporterOptions.reportDir}/mochastackdriver_${suiteName}`
         fs.writeFileSync(`${filePath}`, JSON.stringify(fileObj), {force: true})
-        console.log(`[mochastackdriver] Stackdriver-ready report saved to ${filePath}/mochastackdriver_${obj.stats.start}`)
+        console.log(`[mochastackdriver] Stackdriver-ready report saved to ${filePath}`)
       }
 
       if (!reporterOptions.onlyConsole && !reporterOptions.onlyFile && !reporterOptions.noCloud) {
