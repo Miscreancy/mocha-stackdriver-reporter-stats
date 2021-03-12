@@ -1,6 +1,6 @@
 {
   "name": "mocha-stackdriver-reporter-stats",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Mocha reporter to log test results and stats with Google Cloud Logging API",
   "main": "index.js",
   "author": "Torran Turner <tor.turner@a1comms.com>",
@@ -19,10 +19,10 @@
     "src"
   ],
   "devDependencies": {
-    "mocha": "^7.1.2"
+    "mocha": "^7.2.0"
   },
   "dependencies": {
-    "@google-cloud/logging": "^7.3.0",
+    "@google-cloud/logging": "^9.1.0",
     "nanoid": "^3.1.21"
   },
   "peerDependencies": {
