@@ -31,5 +31,12 @@
   "scripts": {
     "test": "mocha test/*-tests.js --reporter min",
     "dryrun": "mocha test/*-tests.js --reporter index.js"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Miscreancy/mocha-stackdriver-reporter-stats.git"
   }
 }
