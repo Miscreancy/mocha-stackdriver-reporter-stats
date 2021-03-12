@@ -14,6 +14,8 @@ Originally a fork of [mocha-stackdriver-reporter](https://github.com/jouni-kanto
 - `logName`: Log identifier; gets merged with `projectId` into e.g. `projects/test123/logs/my-function%2Fwith-name`. Note how last part is URL encoded. This is automatically taken care when using a `logName` with `/` in the name, e.g. `my-function/with-name`.
 - `entryMetadata`: Metadata for log entries.
 - `stats`: An array of which of the stats from Mocha's stats collector you wish to include (if not specified, it will return all of them)
+- `alsoConsole || onlyConsole || alsoFile || onlyFile`: Write output to/only to console or file (file includes all data from the reporter config for Stackdriver logging)
+- `noCloud`: For when you're testing, or if you want to run this with onlyFile/alsoFile and combined with the [mocha-stackdriver-merge](https://github.com/miscreancy/mocha-stackdriver-merge) module to report all tests (and not just a single spec) back jointly (inspired by [mochawesome-merge](https://github.com/Antontelesh/mochawesome-merge) )
 
 ## CLI
 
