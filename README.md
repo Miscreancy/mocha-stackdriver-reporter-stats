@@ -38,7 +38,7 @@ mocha --reporter mocha-stackdriver-reporter-stats --reporter-options projectId=m
 
 ```javascript
 const Mocha = require("mocha");
-const StackdriverReporter = require("mocha-stackdriver-reporter");
+const StackdriverReporter = require("mocha-stackdriver-reporter-stats");
 
 const mocha = new Mocha();
 
