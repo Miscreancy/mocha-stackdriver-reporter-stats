@@ -78,7 +78,6 @@ function StackdriverReporter(runner, options = {}) {
       }
 
       if (!reporterOptions.onlyConsole && !reporterOptions.onlyFile && !reporterOptions.noCloud) {
-        console.log("Trying to log, bitches")
         if (obj.failures.length > 0) log.error(result);
         else log.info(obj);
       }
