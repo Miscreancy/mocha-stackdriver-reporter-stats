@@ -10,7 +10,8 @@ const {
   EVENT_RUN_BEGIN,
   EVENT_SUITE_BEGIN,
   EVENT_SUITE_END,
-  EVENT_TEST_END
+  EVENT_TEST_END,
+  EVENT_RUN_END
 } = Mocha.Runner.constants;
 
 function StackdriverReporter(runner, options = {}) {
@@ -44,10 +45,10 @@ function StackdriverReporter(runner, options = {}) {
       });
     })
     .on(EVENT_TEST_END, () => {
-      result.totalTestsRegistered++
+      obj.totalTestsRegistered++
     })
     .once(EVENT_RUN_END, () => {
-      obj.stats = configureStats(this.stats)
+      obj.stats = configureStats(this.stats, reporterOptions)
       if (reporterOptions.alsoConsole || reporterOptions.onlyConsole)
         console.log("result", JSON.stringify(obj));
 
@@ -56,6 +57,8 @@ function StackdriverReporter(runner, options = {}) {
         else log.info(result);
       }
     });
+
+
 }
 
 Mocha.utils.inherits(StackdriverReporter, Mocha.reporters.Base);
@@ -87,13 +90,13 @@ Example: --reporter-options projectId=myGcpProjectId,logName=myLog
 }
 
 function configureStats(statsObject, reporterOptions) {
-  if (!reporterOptions.stats) {
+  if (!reporterOptions || !reporterOptions.stats) {
     return statsObject
   }
   else {
     const newStatsObject = {}
-    reporterOptions.stats.forEach(function (item) {
-      newStatsObject.item = statsObject.item
+    reporterOptions.stats.forEach( item => {
+      newStatsObject[item] = statsObject[item]
     })
     return newStatsObject
   }
