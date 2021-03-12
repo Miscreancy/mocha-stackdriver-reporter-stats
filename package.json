@@ -22,7 +22,8 @@
     "mocha": "^7.1.2"
   },
   "dependencies": {
-    "@google-cloud/logging": "^7.3.0"
+    "@google-cloud/logging": "^7.3.0",
+    "nanoid": "^3.1.21"
   },
   "peerDependencies": {
     "mocha": "^6"

@@ -2,6 +2,8 @@
 
 const Mocha = require("mocha");
 const CloudLogger = require("./google-cloud-logger");
+const fs = require("fs");
+const nanoid =  require("nanoid")
 
 const {
   EVENT_TEST_FAIL,
@@ -35,6 +37,11 @@ function StackdriverReporter(runner, options = {}) {
   }
 
   runner
+    .on(EVENT_SUITE_BEGIN, function (suite) {
+      if (suite.title) {
+        obj.suite = suite.title
+      }
+    })
     .on(EVENT_TEST_PASS, (test) => {
       obj.passes.push(test.fullTitle());
     })
@@ -49,12 +56,26 @@ function StackdriverReporter(runner, options = {}) {
     })
     .once(EVENT_RUN_END, () => {
       obj.stats = configureStats(this.stats, reporterOptions)
-      if (reporterOptions.alsoConsole || reporterOptions.onlyConsole)
-        console.log("result", JSON.stringify(obj));
+      if (reporterOptions.alsoConsole || reporterOptions.onlyConsole ) {
+        console.log("[mochastackdriver] result:", JSON.stringify(obj));
+      }
 
-      if (!reporterOptions.onlyConsole) {
-        if (result.failures.length > 0) log.error(result);
-        else log.info(result);
+      if (!reporterOptions.onlyConsole && (reporterOptions.onlyFile || reporterOptions.alsoFile)) {
+        const fileObj = {}
+        fileObj.data = obj
+        if (entryMetadata) { fileObj.metadata = entryMetadata }
+        fileObj.projectId = projectId
+        fileObj.logName = logName
+        let suiteName = fileObj.data.suite.toString().replace(/\s/g, '')
+        const filePath = `${reporterOptions.reportDir}/mochastackdriver_${suiteName}`
+        fs.writeFileSync(`${filePath}`, JSON.stringify(fileObj), {force: true})
+        console.log(`[mochastackdriver] Stackdriver-ready report saved to ${filePath}/mochastackdriver_${obj.stats.start}`)
+      }
+
+      if (!reporterOptions.onlyConsole && !reporterOptions.onlyFile && !reporterOptions.noCloud) {
+        console.log("Trying to log, bitches")
+        if (obj.failures.length > 0) log.error(result);
+        else log.info(obj);
       }
     });
 
@@ -73,7 +94,7 @@ function ensureOptions(reporterOptions) {
   ) {
     const errorMessage = `
 Required reporter options not set.
-Please, supply Google Cloud Platform project ID and log name.
+Please, supply Google Cloud Platform project ID and log name, and confirm output method(s) (cloud, console, file) are configured correctly and without conflict.
 Example: --reporter-options projectId=myGcpProjectId,logName=myLog
 `;
     console.error("Error:", errorMessage);

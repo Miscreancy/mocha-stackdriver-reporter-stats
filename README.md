@@ -54,5 +54,9 @@ mocha.reporter(StackdriverReporter, {
   stats: ["suites", "tests", "passes", "pending", "failures", "start", "end", "duration"],
   alsoConsole: false, // (optional) if true, also output result to console
   onlyConsole: false, // (optional) if true, only output result to console
+  alsoFile: false, // (optional) if true, also output result to file
+  onlyFile: false, // (optional) if true, only output result to file (will be overridden by onlyConsole)
+  reportDir: "reports/stackdriver-reporter", // This will not be created for you. Calling alsoFile or onlyFile without this option will result in an error on reporting
+  noCloud: false // (optional) if true, do not output results to Stackdriver
 });
 ```
