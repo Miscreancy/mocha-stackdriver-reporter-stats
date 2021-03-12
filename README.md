@@ -4,6 +4,8 @@ Mocha reporter using the Google Cloud Logging API with additional stats.
 
 Originally a fork of [mocha-stackdriver-reporter](https://github.com/jouni-kantola/mocha-stackdriver-reporter) and full credit to the original author, whose work I have and will continue to build on.
 
+Note: this was developed for usage with Cypress, so YMMV.
+
 ## Install
 
 `npm install mocha-stackdriver-reporter-stats --save-dev`
